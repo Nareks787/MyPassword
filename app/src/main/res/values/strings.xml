@@ -1,5 +1,26 @@
 <resources>
-    <string name="app_name">mypassword</string>
+    <string name="app_name">MyPassword</string>
+
+    <string name="home_title">MyPassword</string>
+    <string name="open_app">Open app</string>
+    <string name="about_us">About us</string>
+
+    <string name="password_manager_title">Password Manager</string>
+    <string name="add_password">Add password</string>
+
+    <string name="site_hint">Site</string>
+    <string name="login_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="save">Save</string>
+
+    <string name="password_details">Детали записи</string>
+    <string name="site_label">Сайт:</string>
+    <string name="login_label">Логин:</string>
+    <string name="password_label">Пароль:</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
