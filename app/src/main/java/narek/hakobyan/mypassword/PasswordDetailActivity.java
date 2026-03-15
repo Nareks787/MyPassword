@@ -77,10 +77,10 @@ public class PasswordDetailActivity extends AppCompatActivity {
     }
 
     private void showEditDialog() {
-        View dialogView = getLayoutInflater().inflate(R.layout.activity_dialog_password, null);
-        EditText etSite = dialogView.findViewById(R.id.etSite);
-        EditText etLogin = dialogView.findViewById(R.id.etLogin);
-        EditText etPassword = dialogView.findViewById(R.id.etPassword);
+        View redactor = getLayoutInflater().inflate(R.layout.redactor, null);
+        EditText etSite = redactor.findViewById(R.id.etSite);
+        EditText etLogin = redactor.findViewById(R.id.etLogin);
+        EditText etPassword = redactor.findViewById(R.id.etPassword);
 
         etSite.setText(entry.site);
         etLogin.setText(entry.login);
@@ -88,7 +88,7 @@ public class PasswordDetailActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(this)
                 .setTitle("Редактировать")
-                .setView(dialogView)
+                .setView(redactor)
                 .setPositiveButton("Сохранить", (dialog, which) -> {
                     String newSite = etSite.getText().toString().trim();
                     String newLogin = etLogin.getText().toString().trim();
