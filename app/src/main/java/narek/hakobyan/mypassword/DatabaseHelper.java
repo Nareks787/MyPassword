@@ -21,11 +21,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_SITE + " TEXT NOT NULL, " +
-            COLUMN_LOGIN + " TEXT, " +
-            COLUMN_PASSWORD + " TEXT" +
-            ");";
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_SITE + " TEXT NOT NULL, " +
+                    COLUMN_LOGIN + " TEXT, " +
+                    COLUMN_PASSWORD + " TEXT" +
+                    ");";
 
     public static class PasswordEntry {
         public int id;
