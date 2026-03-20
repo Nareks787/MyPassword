@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mypassword">
         <activity
+            android:name=".MasterPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".about_ua"
             android:exported="false"
             android:theme="@style/Theme.Mypassword" />

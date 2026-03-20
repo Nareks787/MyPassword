@@ -3,6 +3,7 @@ package narek.hakobyan.mypassword;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Button about = findViewById(R.id.about_us);
 
         open.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, main_displey.class);
+            Intent intent = new Intent(MainActivity.this, MasterPasswordActivity.class);
             startActivity(intent);
         });
 
