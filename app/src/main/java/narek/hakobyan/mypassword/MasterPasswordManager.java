@@ -4,28 +4,29 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class MasterPasswordManager {
-    private static final String PREF_FILE = "secure_auth_prefs";
-    private static final String KEY_PASSWORD_HASH = "master_password_hash";
 
-    private final SharedPreferences prefs;
-    private final PasswordHashManager hashManager;
+    private static final String PREFS_NAME = "master_password_prefs";
+    private static final String KEY_PASSWORD = "master_password_value";
+
+    private final SharedPreferences preferences;
 
     public MasterPasswordManager(Context context) {
-        prefs = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        hashManager = new PasswordHashManager();
+        preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public boolean hasMasterPassword() {
-        return prefs.contains(KEY_PASSWORD_HASH);
+        String savedPassword = preferences.getString(KEY_PASSWORD, null);
+        return savedPassword != null && !savedPassword.isEmpty();
     }
 
-    public void saveMasterPassword(String plainPassword) {
-        String hash = hashManager.hashPassword(plainPassword);
-        prefs.edit().putString(KEY_PASSWORD_HASH, hash).apply();
+    public void saveMasterPassword(String password) {
+        preferences.edit()
+                .putString(KEY_PASSWORD, password)
+                .apply();
     }
 
-    public boolean verifyMasterPassword(String plainPassword) {
-        String storedHash = prefs.getString(KEY_PASSWORD_HASH, null);
-        return hashManager.verifyPassword(plainPassword, storedHash);
+    public boolean verifyPassword(String password) {
+        String savedPassword = preferences.getString(KEY_PASSWORD, null);
+        return savedPassword != null && savedPassword.equals(password);
     }
 }
