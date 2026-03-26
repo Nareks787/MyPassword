@@ -19,15 +19,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOGIN = "login";
     public static final String COLUMN_PASSWORD = "password";
 
+    private final CryptoManager cryptoManager;
+
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_SITE + " TEXT NOT NULL, " +
-                    COLUMN_LOGIN + " TEXT, " +
-                    COLUMN_PASSWORD + " TEXT" +
-                    ");";
-
-    private final PasswordHashManager hashManager;
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_SITE + " TEXT NOT NULL, " +
+            COLUMN_LOGIN + " TEXT, " +
+            COLUMN_PASSWORD + " TEXT" +
+            ");";
 
     public static class PasswordEntry {
         public int id;
@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        hashManager = new PasswordHashManager();
+        cryptoManager = new CryptoManager();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_SITE, site);
         values.put(COLUMN_LOGIN, login);
-        values.put(COLUMN_PASSWORD, hashManager.hashPassword(password));
+        values.put(COLUMN_PASSWORD, cryptoManager.encrypt(password));
         long id = db.insert(TABLE_NAME, null, values);
         db.close();
         return id;
@@ -82,8 +82,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
                 String site = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SITE));
                 String login = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LOGIN));
-                String passwordHash = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
-                list.add(new PasswordEntry(id, site, login, passwordHash));
+                String encryptedPassword = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+                list.add(new PasswordEntry(id, site, login, cryptoManager.decrypt(encryptedPassword)));
             } while (cursor.moveToNext());
         }
 
@@ -105,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SITE)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LOGIN)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
+                    cryptoManager.decrypt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD)))
             );
         }
         cursor.close();
@@ -124,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_SITE, site);
         values.put(COLUMN_LOGIN, login);
-        values.put(COLUMN_PASSWORD, hashManager.hashPassword(password));
+        values.put(COLUMN_PASSWORD, cryptoManager.encrypt(password));
         db.update(TABLE_NAME, values, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
     }
