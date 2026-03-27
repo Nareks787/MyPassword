@@ -5,13 +5,13 @@ plugins {
 android {
     namespace = "narek.hakobyan.mypassword"
     compileSdk {
-        version = release(36)
+        version = 34
     }
 
     defaultConfig {
         applicationId = "narek.hakobyan.mypassword"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
