@@ -142,6 +142,19 @@ location of your Java installation."
     fi
 fi
 
+# Guard against unsupported JDK versions for this project/Gradle setup.
+JAVA_VERSION_OUTPUT=$("$JAVACMD" -version 2>&1 | sed -n '1s/.*"\([0-9][0-9]*\).*/\1/p')
+case "$JAVA_VERSION_OUTPUT" in
+  "" ) ;;
+  25|2[6-9]|[3-9][0-9]|[1-9][0-9][0-9]*)
+    die "ERROR: Detected Java $JAVA_VERSION_OUTPUT, which is not supported by this project setup.
+
+Use Java 21 (recommended) or Java 17 and set JAVA_HOME accordingly.
+Example:
+  export JAVA_HOME=\"/path/to/jdk-21\""
+    ;;
+esac
+
 # Increase the maximum file descriptors if we can.
 if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
     case $MAX_FD in #(
