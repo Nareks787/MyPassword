@@ -2,18 +2,22 @@ package narek.hakobyan.mypassword;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class main_displey extends AppCompatActivity {
 
-    ListView listView;
+    RecyclerView listView;
     ArrayList<DatabaseHelper.PasswordEntry> entries;
     ArrayList<String> displayList;
-    ArrayAdapter<String> adapter;
+    PasswordAdapter adapter;
     DatabaseHelper dbHelper;
 
     @Override
@@ -28,21 +32,19 @@ public class main_displey extends AppCompatActivity {
         entries = new ArrayList<>();
         displayList = new ArrayList<>();
 
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, displayList);
+        adapter = new PasswordAdapter(displayList, position -> {
+            DatabaseHelper.PasswordEntry entry = entries.get(position);
+            Intent intent = new Intent(this, PasswordDetailActivity.class);
+            intent.putExtra("id", entry.id);
+            startActivity(intent);
+        });
+        listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
 
         loadPasswords();
 
         add.setOnClickListener(v -> {
             Intent intent = new Intent(this, dialog_password.class);
-            startActivity(intent);
-        });
-
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            DatabaseHelper.PasswordEntry entry = entries.get(position);
-            Intent intent = new Intent(this, PasswordDetailActivity.class);
-            intent.putExtra("id", entry.id);
             startActivity(intent);
         });
     }
@@ -61,5 +63,46 @@ public class main_displey extends AppCompatActivity {
             displayList.add(e.site + "  —  " + e.login);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    static class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder> {
+        interface OnItemClickListener {
+            void onItemClick(int position);
+        }
+
+        private final ArrayList<String> items;
+        private final OnItemClickListener listener;
+
+        PasswordAdapter(ArrayList<String> items, OnItemClickListener listener) {
+            this.items = items;
+            this.listener = listener;
+        }
+
+        @Override
+        public PasswordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+            return new PasswordViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(PasswordViewHolder holder, int position) {
+            holder.text1.setText(items.get(position));
+            holder.itemView.setOnClickListener(v -> listener.onItemClick(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        static class PasswordViewHolder extends RecyclerView.ViewHolder {
+            TextView text1;
+
+            PasswordViewHolder(View itemView) {
+                super(itemView);
+                text1 = itemView.findViewById(android.R.id.text1);
+            }
+        }
     }
 }
