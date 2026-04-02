@@ -1,6 +1,7 @@
 package narek.hakobyan.mypassword;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -14,7 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOGIN_SECURITY_PREFS = "login_security_prefs";
+    private static final String KEY_FAILED_ATTEMPTS = "failed_master_password_attempts";
+    private static final int MAX_FAILED_ATTEMPTS = 10;
+
     private MasterPasswordManager masterPasswordManager;
+    private SharedPreferences loginSecurityPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         masterPasswordManager = new MasterPasswordManager(this);
+        loginSecurityPreferences = getSharedPreferences(LOGIN_SECURITY_PREFS, MODE_PRIVATE);
 
         Button open = findViewById(R.id.btnOpen);
         Button about = findViewById(R.id.about_us);
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             masterPasswordManager.saveMasterPassword(password);
+            resetFailedAttempts();
             dialog.dismiss();
             openPasswordScreen();
         }));
@@ -106,9 +114,16 @@ public class MainActivity extends AppCompatActivity {
         dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String password = passwordInput.getText().toString().trim();
             if (masterPasswordManager.verifyMasterPassword(password)) {
+                resetFailedAttempts();
                 dialog.dismiss();
                 openPasswordScreen();
             } else {
+                int failedAttempts = incrementFailedAttempts();
+                if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+                    performEmergencyWipe();
+                    dialog.dismiss();
+                    return;
+                }
                 Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
             }
         }));
@@ -119,5 +134,46 @@ public class MainActivity extends AppCompatActivity {
     private void openPasswordScreen() {
         Intent intent = new Intent(MainActivity.this, main_displey.class);
         startActivity(intent);
+    }
+
+    private int incrementFailedAttempts() {
+        int attempts = loginSecurityPreferences.getInt(KEY_FAILED_ATTEMPTS, 0) + 1;
+        loginSecurityPreferences.edit().putInt(KEY_FAILED_ATTEMPTS, attempts).apply();
+        return attempts;
+    }
+
+    private void resetFailedAttempts() {
+        loginSecurityPreferences.edit().putInt(KEY_FAILED_ATTEMPTS, 0).apply();
+    }
+
+    private void performEmergencyWipe() {
+        // ВНИМАНИЕ: безвозвратно удаляем локальную БД с сохранёнными паролями.
+        deleteDatabase("passwords.db");
+
+        clearAllSharedPreferences();
+
+        // ВНИМАНИЕ: удаляем ключ AES-GCM из Keystore — расшифровать старые данные больше нельзя.
+        new CryptoManager().resetKeyMaterial();
+
+        resetFailedAttempts();
+        Toast.makeText(this, "Данные удалены после 10 неудачных попыток входа", Toast.LENGTH_LONG).show();
+        recreate();
+    }
+
+    private void clearAllSharedPreferences() {
+        java.io.File sharedPrefsDir = new java.io.File(getApplicationInfo().dataDir, "shared_prefs");
+        java.io.File[] prefFiles = sharedPrefsDir.listFiles();
+        if (prefFiles == null) {
+            return;
+        }
+
+        for (java.io.File prefFile : prefFiles) {
+            String fileName = prefFile.getName();
+            if (!fileName.endsWith(".xml")) {
+                continue;
+            }
+            String prefName = fileName.substring(0, fileName.length() - 4);
+            getSharedPreferences(prefName, MODE_PRIVATE).edit().clear().apply();
+        }
     }
 }

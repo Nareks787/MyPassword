@@ -101,4 +101,16 @@ public class CryptoManager {
         keyGenerator.init(keySpec);
         return keyGenerator.generateKey();
     }
+
+    public void resetKeyMaterial() {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KEYSTORE_PROVIDER);
+            keyStore.load(null);
+            if (keyStore.containsAlias(KEY_ALIAS)) {
+                keyStore.deleteEntry(KEY_ALIAS);
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to reset encryption key material", e);
+        }
+    }
 }
