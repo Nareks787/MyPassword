@@ -1,6 +1,7 @@
 package narek.hakobyan.mypassword;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -12,7 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MasterPasswordActivity extends AppCompatActivity {
 
+    private static final String LOGIN_SECURITY_PREFS = "login_security_prefs";
+    private static final String KEY_FAILED_ATTEMPTS = "failed_master_password_attempts";
+    private static final int MAX_FAILED_ATTEMPTS = 10;
+
     private MasterPasswordManager masterPasswordManager;
+    private SharedPreferences loginSecurityPreferences;
     private boolean hasExistingPassword;
 
     @Override
@@ -21,6 +27,7 @@ public class MasterPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_master_password);
 
         masterPasswordManager = new MasterPasswordManager(this);
+        loginSecurityPreferences = getSharedPreferences(LOGIN_SECURITY_PREFS, MODE_PRIVATE);
         hasExistingPassword = masterPasswordManager.hasMasterPassword();
 
         TextView title = findViewById(R.id.tvMasterPasswordTitle);
@@ -55,17 +62,66 @@ public class MasterPasswordActivity extends AppCompatActivity {
 
             if (hasExistingPassword) {
                 if (masterPasswordManager.verifyMasterPassword(password)) {
+                    resetFailedAttempts();
                     openPasswordsScreen();
                 } else {
+                    int failedAttempts = incrementFailedAttempts();
+                    if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+                        performEmergencyWipe();
+                        return;
+                    }
                     passwordInput.setError(getString(R.string.master_password_incorrect));
                     passwordInput.requestFocus();
                 }
             } else {
+                resetFailedAttempts();
                 masterPasswordManager.saveMasterPassword(password);
                 Toast.makeText(this, R.string.master_password_created, Toast.LENGTH_SHORT).show();
                 openPasswordsScreen();
             }
         });
+    }
+
+    private int incrementFailedAttempts() {
+        int attempts = loginSecurityPreferences.getInt(KEY_FAILED_ATTEMPTS, 0) + 1;
+        loginSecurityPreferences.edit().putInt(KEY_FAILED_ATTEMPTS, attempts).apply();
+        return attempts;
+    }
+
+    private void resetFailedAttempts() {
+        loginSecurityPreferences.edit().putInt(KEY_FAILED_ATTEMPTS, 0).apply();
+    }
+
+    private void performEmergencyWipe() {
+        // ВНИМАНИЕ: Ниже выполняется безвозвратное удаление базы с паролями приложения.
+        deleteDatabase("passwords.db");
+
+        clearAllSharedPreferences();
+
+        // ВНИМАНИЕ: После удаления ключа из Android Keystore старые зашифрованные данные восстановить нельзя.
+        new CryptoManager().resetKeyMaterial();
+
+        hasExistingPassword = false;
+        resetFailedAttempts();
+        Toast.makeText(this, "Данные удалены после 10 неудачных попыток входа", Toast.LENGTH_LONG).show();
+        recreate();
+    }
+
+    private void clearAllSharedPreferences() {
+        java.io.File sharedPrefsDir = new java.io.File(getApplicationInfo().dataDir, "shared_prefs");
+        java.io.File[] prefFiles = sharedPrefsDir.listFiles();
+        if (prefFiles == null) {
+            return;
+        }
+
+        for (java.io.File prefFile : prefFiles) {
+            String fileName = prefFile.getName();
+            if (!fileName.endsWith(".xml")) {
+                continue;
+            }
+            String prefName = fileName.substring(0, fileName.length() - 4);
+            getSharedPreferences(prefName, MODE_PRIVATE).edit().clear().apply();
+        }
     }
 
     private void openPasswordsScreen() {
