@@ -1,31 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/cardview_dark_background">
+    android:padding="24dp"
+    android:background="#023020">
 
-    <EditText
-        android:id="@+id/etSite"
+    <!-- Title -->
+    <TextView
+        android:text="Редактировать"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#D4A373"
+        android:layout_marginBottom="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Site -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sait"
-        android:minHeight="48dp"
-        />
+        android:layout_marginBottom="12dp"
+        app:boxStrokeColor="#D4A373"
+        app:boxBackgroundColor="#0A3020"
+        app:hintTextColor="#D4A373"
+        app:boxBackgroundMode="outline"
+        app:cornerRadius="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/etLogin"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Site"
+            android:minHeight="48dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Login -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Login"
-        android:minHeight="48dp" />
+        android:layout_marginBottom="12dp"
+        app:boxStrokeColor="#D4A373"
+        app:boxBackgroundColor="#0A3020"
+        app:hintTextColor="#D4A373"
+        app:boxBackgroundMode="outline"
+        app:cornerRadius="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Login"
+            android:minHeight="48dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:layout_marginBottom="24dp"
+        app:boxStrokeColor="#D4A373"
+        app:boxBackgroundColor="#0A3020"
+        app:hintTextColor="#D4A373"
+        app:boxBackgroundMode="outline"
+        app:cornerRadius="10dp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="#D4A373"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Сохранить"
+        android:textSize="16sp"
+        android:textColor="#023020"
+        android:textStyle="bold"
+        app:backgroundTint="#D4A373"
+        app:cornerRadius="14dp" />
+
 </LinearLayout>
