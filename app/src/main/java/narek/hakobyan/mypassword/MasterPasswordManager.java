@@ -25,7 +25,7 @@ public class MasterPasswordManager {
                 .apply();
     }
 
-    public boolean verifyPassword(String password) {
+    public boolean verifyMasterPassword(String password) {
         String savedPassword = preferences.getString(KEY_PASSWORD, null);
         return savedPassword != null && savedPassword.equals(password);
     }

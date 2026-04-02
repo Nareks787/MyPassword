@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -78,7 +79,11 @@ public class CryptoManager {
 
     private SecretKey getOrCreateSecretKey() throws GeneralSecurityException {
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_PROVIDER);
-        keyStore.load(null);
+        try {
+            keyStore.load(null);
+        } catch (java.io.IOException e) {
+            throw new KeyStoreException("Failed to load KeyStore", e);
+        }
 
         KeyStore.Entry existingEntry = keyStore.getEntry(KEY_ALIAS, null);
         if (existingEntry instanceof KeyStore.SecretKeyEntry) {

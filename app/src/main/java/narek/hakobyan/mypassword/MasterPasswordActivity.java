@@ -54,7 +54,7 @@ public class MasterPasswordActivity extends AppCompatActivity {
             }
 
             if (hasExistingPassword) {
-                if (masterPasswordManager.verifyPassword(password)) {
+                if (masterPasswordManager.verifyMasterPassword(password)) {
                     openPasswordsScreen();
                 } else {
                     passwordInput.setError(getString(R.string.master_password_incorrect));
