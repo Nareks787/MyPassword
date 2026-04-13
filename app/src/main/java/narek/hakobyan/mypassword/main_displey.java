@@ -1,12 +1,16 @@
 package narek.hakobyan.mypassword;
 
 import android.content.Intent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +47,7 @@ public class main_displey extends AppCompatActivity {
                 intent.putExtra("id", entry.id);
                 startActivity(intent);
             }
-        });
+        }, position -> copyPassword(entries.get(position).password));
 
         listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(adapter);
@@ -75,6 +79,17 @@ public class main_displey extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private void copyPassword(String password) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboardManager == null) {
+            Toast.makeText(this, "Clipboard недоступен", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ClipData clipData = ClipData.newPlainText("password", password);
+        clipboardManager.setPrimaryClip(clipData);
+        Toast.makeText(this, "Пароль скопирован", Toast.LENGTH_SHORT).show();
+    }
+
     // ================== ADAPTER ==================
     static class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder> {
 
@@ -82,12 +97,18 @@ public class main_displey extends AppCompatActivity {
             void onItemClick(int position);
         }
 
+        interface OnCopyClickListener {
+            void onCopyClick(int position);
+        }
+
         private ArrayList<String> items;
         private OnItemClickListener listener;
+        private OnCopyClickListener copyListener;
 
-        public PasswordAdapter(ArrayList<String> items, OnItemClickListener listener) {
+        public PasswordAdapter(ArrayList<String> items, OnItemClickListener listener, OnCopyClickListener copyListener) {
             this.items = items;
             this.listener = listener;
+            this.copyListener = copyListener;
         }
 
         @Override
@@ -116,6 +137,12 @@ public class main_displey extends AppCompatActivity {
                     listener.onItemClick(position);
                 }
             });
+
+            holder.btnCopyPassword.setOnClickListener(v -> {
+                if (copyListener != null) {
+                    copyListener.onCopyClick(position);
+                }
+            });
         }
 
         @Override
@@ -127,11 +154,13 @@ public class main_displey extends AppCompatActivity {
 
             TextView tvServiceName;
             TextView tvEmail;
+            Button btnCopyPassword;
 
             public PasswordViewHolder(View itemView) {
                 super(itemView);
                 tvServiceName = itemView.findViewById(R.id.tvServiceName);
                 tvEmail = itemView.findViewById(R.id.tvEmail);
+                btnCopyPassword = itemView.findViewById(R.id.btnCopyPassword);
             }
         }
     }

@@ -99,6 +99,11 @@ public class PasswordDetailActivity extends AppCompatActivity {
                         return;
                     }
 
+                    if (!PasswordSecurityUtils.isValidPassword(newPassword)) {
+                        Toast.makeText(this, PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     dbHelper.updatePassword(entryId, newSite, newLogin, newPassword);
                     Toast.makeText(this, "Сохранено", Toast.LENGTH_SHORT).show();
                     loadEntry();
