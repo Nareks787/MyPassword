@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 public final class PasswordSecurityUtils {
 
     public static final int MIN_PASSWORD_LENGTH = 16;
-    public static final String VALIDATION_ERROR_MESSAGE = "Пароль должен быть от 16 символов и содержать заглавные буквы, цифры и спецсимволы";
+    public static final String VALIDATION_ERROR_MESSAGE = "Password must be at least 16 characters and contain uppercase letters, digits, and special characters";
 
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";

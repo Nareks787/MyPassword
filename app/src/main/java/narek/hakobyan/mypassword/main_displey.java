@@ -82,12 +82,12 @@ public class main_displey extends AppCompatActivity {
     private void copyPassword(String password) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboardManager == null) {
-            Toast.makeText(this, "Clipboard недоступен", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Clipboard unavailable", Toast.LENGTH_SHORT).show();
             return;
         }
         ClipData clipData = ClipData.newPlainText("password", password);
         clipboardManager.setPrimaryClip(clipData);
-        Toast.makeText(this, "Пароль скопирован", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Password copied", Toast.LENGTH_SHORT).show();
     }
 
     // ================== ADAPTER ==================
