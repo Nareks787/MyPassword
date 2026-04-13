@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         new CryptoManager().resetKeyMaterial();
 
         resetFailedAttempts();
-        Toast.makeText(this, "Данные удалены после 10 неудачных попыток входа", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Data deleted after 10 failed login attempts", Toast.LENGTH_LONG).show();
         recreate();
     }
 
