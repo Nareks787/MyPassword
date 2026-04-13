@@ -55,8 +55,8 @@ public class MasterPasswordActivity extends AppCompatActivity {
                 return;
             }
 
-            if (password.length() < 4) {
-                passwordInput.setError(getString(R.string.master_password_too_short));
+            if (!hasExistingPassword && !PasswordSecurityUtils.isValidPassword(password)) {
+                passwordInput.setError(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
                 return;
             }
 

@@ -60,6 +60,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long insertPassword(String site, String login, String password) {
+        if (!PasswordSecurityUtils.isValidPassword(password)) {
+            throw new IllegalArgumentException(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
+        }
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_SITE, site);
@@ -120,6 +123,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updatePassword(int id, String site, String login, String password) {
+        if (!PasswordSecurityUtils.isValidPassword(password)) {
+            throw new IllegalArgumentException(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
+        }
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_SITE, site);
