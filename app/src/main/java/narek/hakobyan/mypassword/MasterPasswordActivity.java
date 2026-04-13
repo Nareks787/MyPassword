@@ -3,7 +3,10 @@ package narek.hakobyan.mypassword;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,18 +36,24 @@ public class MasterPasswordActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.tvMasterPasswordTitle);
         TextView subtitle = findViewById(R.id.tvMasterPasswordSubtitle);
         EditText passwordInput = findViewById(R.id.etMasterPassword);
+        EditText confirmInput = findViewById(R.id.etMasterPasswordConfirm);
         Button actionButton = findViewById(R.id.btnMasterPasswordAction);
 
         if (hasExistingPassword) {
             title.setText(R.string.enter_master_password_title);
             subtitle.setText(R.string.enter_master_password_subtitle);
             passwordInput.setHint(R.string.enter_master_password_hint);
+            confirmInput.setVisibility(View.GONE);
             actionButton.setText(R.string.unlock_button);
         } else {
             title.setText(R.string.create_master_password_title);
             subtitle.setText(R.string.create_master_password_subtitle);
             passwordInput.setHint(R.string.create_master_password_hint);
+            confirmInput.setHint(R.string.confirm_master_password_hint);
+            confirmInput.setVisibility(View.VISIBLE);
             actionButton.setText(R.string.create_password_button);
+            actionButton.setEnabled(false);
+            addRegistrationValidationWatcher(passwordInput, confirmInput, actionButton);
         }
 
         actionButton.setOnClickListener(v -> {
@@ -57,6 +66,11 @@ public class MasterPasswordActivity extends AppCompatActivity {
 
             if (!hasExistingPassword && !PasswordSecurityUtils.isValidPassword(password)) {
                 passwordInput.setError(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
+                return;
+            }
+
+            if (!hasExistingPassword && !TextUtils.equals(password, confirmInput.getText().toString().trim())) {
+                confirmInput.setError(getString(R.string.passwords_do_not_match));
                 return;
             }
 
@@ -80,6 +94,31 @@ public class MasterPasswordActivity extends AppCompatActivity {
                 openPasswordsScreen();
             }
         });
+    }
+
+    private void addRegistrationValidationWatcher(EditText passwordInput, EditText confirmInput, Button actionButton) {
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No-op
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String password = passwordInput.getText().toString().trim();
+                String confirm = confirmInput.getText().toString().trim();
+                boolean isValid = PasswordSecurityUtils.isValidPassword(password) && TextUtils.equals(password, confirm);
+                actionButton.setEnabled(isValid);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No-op
+            }
+        };
+
+        passwordInput.addTextChangedListener(watcher);
+        confirmInput.addTextChangedListener(watcher);
     }
 
     private int incrementFailedAttempts() {

@@ -5,12 +5,13 @@ import java.security.SecureRandom;
 public final class PasswordSecurityUtils {
 
     public static final int MIN_PASSWORD_LENGTH = 16;
-    public static final String VALIDATION_ERROR_MESSAGE = "Password must be at least 16 characters and contain uppercase letters, digits, and special characters";
+    public static final String VALIDATION_ERROR_MESSAGE = "Password must be at least 16 characters and contain uppercase, lowercase, digit, and special characters";
 
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-    private static final String ALL_ALLOWED = UPPERCASE + "abcdefghijklmnopqrstuvwxyz" + DIGITS + SPECIAL;
+    private static final String ALL_ALLOWED = UPPERCASE + LOWERCASE + DIGITS + SPECIAL;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private PasswordSecurityUtils() {
@@ -22,6 +23,7 @@ public final class PasswordSecurityUtils {
         }
 
         boolean hasUpper = false;
+        boolean hasLower = false;
         boolean hasDigit = false;
         boolean hasSpecial = false;
 
@@ -29,6 +31,8 @@ public final class PasswordSecurityUtils {
             char c = password.charAt(i);
             if (Character.isUpperCase(c)) {
                 hasUpper = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLower = true;
             } else if (Character.isDigit(c)) {
                 hasDigit = true;
             } else if (SPECIAL.indexOf(c) >= 0) {
@@ -36,7 +40,7 @@ public final class PasswordSecurityUtils {
             }
         }
 
-        return hasUpper && hasDigit && hasSpecial;
+        return hasUpper && hasLower && hasDigit && hasSpecial;
     }
 
     public static String generateStrongPassword(int length) {
@@ -44,10 +48,11 @@ public final class PasswordSecurityUtils {
         char[] passwordChars = new char[resultLength];
 
         passwordChars[0] = randomCharFrom(UPPERCASE);
-        passwordChars[1] = randomCharFrom(DIGITS);
-        passwordChars[2] = randomCharFrom(SPECIAL);
+        passwordChars[1] = randomCharFrom(LOWERCASE);
+        passwordChars[2] = randomCharFrom(DIGITS);
+        passwordChars[3] = randomCharFrom(SPECIAL);
 
-        for (int i = 3; i < resultLength; i++) {
+        for (int i = 4; i < resultLength; i++) {
             passwordChars[i] = randomCharFrom(ALL_ALLOWED);
         }
 

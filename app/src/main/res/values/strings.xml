@@ -6,13 +6,15 @@
     <string name="enter_master_password_subtitle">If the master password is correct, the app will open.</string>
     <string name="enter_master_password_hint">Master password</string>
     <string name="create_master_password_title">Create master password</string>
-    <string name="create_master_password_subtitle">No master password was found. Create one to protect the app.</string>
+    <string name="create_master_password_subtitle">Use 16+ chars with uppercase, lowercase, digit and special symbol.</string>
     <string name="create_master_password_hint">Create master password</string>
+    <string name="confirm_master_password_hint">Confirm master password</string>
     <string name="unlock_button">Unlock</string>
     <string name="create_password_button">Create password</string>
     <string name="master_password_required">Enter a master password.</string>
     <string name="master_password_too_short">Use at least 4 characters.</string>
     <string name="master_password_incorrect">Incorrect master password.</string>
+    <string name="passwords_do_not_match">Passwords do not match.</string>
     <string name="master_password_created">Master password created.</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
