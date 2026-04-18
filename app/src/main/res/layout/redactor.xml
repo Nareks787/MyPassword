@@ -12,7 +12,7 @@
         android:text="Edit"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#9CBA7A"
+        android:textColor="#9CBA7F"
         android:layout_marginBottom="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -22,9 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        app:boxStrokeColor="#9CBA7A"
+        app:boxStrokeColor="#9CBA7F"
         app:boxBackgroundColor="#7A3A22"
-        app:hintTextColor="#9CBA7A"
+        app:hintTextColor="#9CBA7F"
         app:boxBackgroundMode="outline"
         app:cornerRadius="10dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -43,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        app:boxStrokeColor="#9CBA7A"
+        app:boxStrokeColor="#9CBA7F"
         app:boxBackgroundColor="#7A3A22"
-        app:hintTextColor="#9CBA7A"
+        app:hintTextColor="#9CBA7F"
         app:boxBackgroundMode="outline"
         app:cornerRadius="10dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -64,13 +64,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:boxStrokeColor="#9CBA7A"
+        app:boxStrokeColor="#9CBA7F"
         app:boxBackgroundColor="#7A3A22"
-        app:hintTextColor="#9CBA7A"
+        app:hintTextColor="#9CBA7F"
         app:boxBackgroundMode="outline"
         app:cornerRadius="10dp"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="#9CBA7A"
+        app:passwordToggleTint="#9CBA7F"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +92,7 @@
         android:textSize="16sp"
         android:textColor="#99482A"
         android:textStyle="bold"
-        app:backgroundTint="#9CBA7A"
+        app:backgroundTint="#9CBA7F"
         app:cornerRadius="14dp" />
 
 </LinearLayout>

@@ -18,14 +18,14 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_lock"
-            app:tint="#9CBA7A" />
+            app:tint="#9CBA7F" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="MyPassWord"
-            android:textColor="#9CBA7A"
+            android:textColor="#9CBA7F"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#229CBA7A"
+        android:background="#229CBA7F"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp" />
 
@@ -62,7 +62,7 @@
         android:textSize="16sp"
         android:textColor="#99482A"
         android:textStyle="bold"
-        app:backgroundTint="#9CBA7A"
+        app:backgroundTint="#9CBA7F"
         app:cornerRadius="14dp" />
 
 </LinearLayout>
