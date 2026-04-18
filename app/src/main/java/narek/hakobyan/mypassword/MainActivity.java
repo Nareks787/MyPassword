@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         loginSecurityPreferences = getSharedPreferences(LOGIN_SECURITY_PREFS, MODE_PRIVATE);
 
         Button open = findViewById(R.id.btnOpen);
-        Button about = findViewById(R.id.about_us);
+
 
         open.setOnClickListener(v -> {
             if (masterPasswordManager.hasMasterPassword()) {
@@ -39,11 +39,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 showCreateMasterPasswordDialog();
             }
-        });
-
-        about.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, about_ua.class);
-            startActivity(intent);
         });
     }
 
@@ -77,9 +72,8 @@ public class MainActivity extends AppCompatActivity {
             String password = passwordInput.getText().toString().trim();
             String confirm = confirmInput.getText().toString().trim();
 
-            if (password.length() < 6) {
-                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
-                return;
+            if (!PasswordSecurityUtils.isValidPassword(password)) {
+                Toast.makeText(this, PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE, Toast.LENGTH_LONG).show();
             }
 
             if (!TextUtils.equals(password, confirm)) {
@@ -87,7 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            masterPasswordManager.saveMasterPassword(password);
+            try {
+                masterPasswordManager.saveMasterPassword(password);
+            } catch (IllegalArgumentException e) {
+                passwordInput.setError(e.getMessage());
+                return;
+            }
             resetFailedAttempts();
             dialog.dismiss();
             openPasswordScreen();

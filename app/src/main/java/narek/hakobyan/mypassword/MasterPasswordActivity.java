@@ -75,7 +75,12 @@ public class MasterPasswordActivity extends AppCompatActivity {
                 }
             } else {
                 resetFailedAttempts();
-                masterPasswordManager.saveMasterPassword(password);
+                try {
+                    masterPasswordManager.saveMasterPassword(password);
+                } catch (IllegalArgumentException e) {
+                    passwordInput.setError(e.getMessage());
+                    return;
+                }
                 Toast.makeText(this, R.string.master_password_created, Toast.LENGTH_SHORT).show();
                 openPasswordsScreen();
             }

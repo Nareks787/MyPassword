@@ -20,6 +20,9 @@ public class MasterPasswordManager {
     }
 
     public void saveMasterPassword(String password) {
+        if (!PasswordSecurityUtils.isValidPassword(password)) {
+            throw new IllegalArgumentException(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
+        }
         preferences.edit()
                 .putString(KEY_PASSWORD, password)
                 .apply();

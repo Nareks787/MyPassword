@@ -1,4 +1,3 @@
-
 package narek.hakobyan.mypassword;
 
 import android.os.Bundle;
@@ -25,7 +24,6 @@ public class dialog_password extends AppCompatActivity {
         save.setOnClickListener(v -> {
             String rawPassword = password.getText().toString();
             if (!PasswordSecurityUtils.isValidPassword(rawPassword)) {
-                password.setError(PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE);
                 Toast.makeText(this, PasswordSecurityUtils.VALIDATION_ERROR_MESSAGE, Toast.LENGTH_LONG).show();
                 return;
             }

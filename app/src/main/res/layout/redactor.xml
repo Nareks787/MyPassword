@@ -7,15 +7,7 @@
     android:padding="24dp"
     android:background="#99482A">
 
-    <!-- Title -->
-    <TextView
-        android:text="Edit"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#9CBA7F"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
     <!-- Site -->
     <com.google.android.material.textfield.TextInputLayout
@@ -82,17 +74,5 @@
             android:minHeight="48dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Save Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="Save"
-        android:textSize="16sp"
-        android:textColor="#99482A"
-        android:textStyle="bold"
-        app:backgroundTint="#9CBA7F"
-        app:cornerRadius="14dp" />
 
 </LinearLayout>
