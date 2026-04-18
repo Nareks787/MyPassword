@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#023020">
+    android:background="#99482A">
 
     
     <View
@@ -23,7 +23,7 @@
         android:layout_height="64dp"
         android:layout_marginTop="130dp"
         android:src="@drawable/ic_lock"
-        app:tint="#D4A373"
+        app:tint="#9CBA7F"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -35,7 +35,7 @@
         android:layout_marginTop="12dp"
         android:letterSpacing="-0.02"
         android:text="MyPassWord"
-        android:textColor="#D4A373"
+        android:textColor="#9CBA7F"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/icon"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="secure · simple · yours"
-        android:textColor="#80D4A373"
+        android:textColor="#809CBA7F"
         android:textSize="13sp"
         android:letterSpacing="0.05"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -60,10 +60,10 @@
         android:layout_width="260dp"
         android:layout_height="52dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#D4A373"
+        android:backgroundTint="#9CBA7F"
         android:stateListAnimator="@null"
         android:text="@string/open_app"
-        android:textColor="#023020"
+        android:textColor="#99482A"
         android:textSize="17sp"
         android:textStyle="bold"
         app:cornerRadius="14dp"
@@ -79,8 +79,8 @@
         android:layout_marginTop="14dp"
         android:text="@string/about_us"
         android:textSize="17sp"
-        android:textColor="#D4A373"
-        app:strokeColor="#73D4A373"
+        android:textColor="#9CBA7F"
+        app:strokeColor="#739CBA7F"
         app:strokeWidth="1.5dp"
         app:cornerRadius="14dp"
         app:layout_constraintTop_toBottomOf="@id/btnOpen"

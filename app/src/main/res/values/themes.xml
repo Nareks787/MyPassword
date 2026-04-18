@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.Mypassword" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#D4A373</item>
-        <item name="colorOnPrimary">#023020</item>
-        <item name="colorSurface">#023020</item>
-        <item name="colorOnSurface">#D4A373</item>
-        <item name="android:textColorHint">#80D4A373</item>
-        <item name="android:editTextColor">#D4A373</item>
+        <item name="colorPrimary">#9CBA7F</item>
+        <item name="colorOnPrimary">#99482A</item>
+        <item name="colorSurface">#99482A</item>
+        <item name="colorOnSurface">#9CBA7F</item>
+        <item name="android:textColorHint">#809CBA7F</item>
+        <item name="android:editTextColor">#9CBA7F</item>
     </style>
 
     <style name="Theme.Mypassword" parent="Base.Theme.Mypassword" />
